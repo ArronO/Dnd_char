@@ -1,0 +1,682 @@
+import random
+
+
+def stat_roll():
+    statlist = [random.randint(1, 6), random.randint(1, 6), random.randint(1, 6), random.randint(1, 6)]
+    statlist.sort()
+    total = 0
+    for w in range(1, 4):
+        total += statlist[w]
+    return total
+
+
+def stat_assignment(lower, upper):
+    if lower == upper:
+        return stat_array[upper]
+    variable = random.randint(lower, upper)
+    while stat_array[variable] == 0:
+        variable = random.randint(lower, upper)
+    value = stat_array[variable]
+    stat_array[variable] = 0
+    return value
+
+
+def class_roll():
+    class_list = {
+        1: "Barbarian",
+        2: "Bard",
+        3: "Cleric",
+        4: "Druid",
+        5: "Fighter",
+        6: "Monk",
+        7: "Paladin",
+        8: "Ranger",
+        9: "Rogue",
+        10: "Sorcerer",
+        11: "Warlock",
+        12: "Wizard",
+    }
+    number = random.randint(1, 12)
+    return class_list.get(number)
+
+
+def race_roll():
+    race_list = {
+        1: "Human",
+        2: "Elf",
+        3: "Dwarf",
+        4: "Halfling",
+        5: "Gnome",
+        6: "Tiefling",
+        7: "Half-Orc",
+        8: "Dragonborn",
+        9: "Half-Elf",
+        10: "Genasi",
+        11: "Goblin",
+        12: "Kobold",
+    }
+    number = random.randint(1, 39)
+    if number < 7:  # 6, human
+        number = 1
+    elif number < 11:  # 4, elf
+        number = 2
+    elif number < 15:  # 4, dwarf
+        number = 3
+    elif number < 19:  # 4, halfling
+        number = 4
+    elif number < 22:  # 3, gnome
+        number = 5
+    elif number < 25:  # 3, tiefling
+        number = 6
+    elif number < 29:  # 4, half-orc
+        number = 7
+    elif number < 31:  # 2, dragonborn
+        number = 8
+    elif number < 34:  # 3, half-elf
+        number = 9
+    elif number < 36:  # 2, genasi
+        number = 10
+    elif number < 38:  # 2, goblin
+        number = 11
+    elif number < 40:  # 2, kobold
+        number = 12
+    return race_list.get(number)
+
+
+class Character:
+    def __init__(self):
+        self.__str = 0
+        self.__dex = 0
+        self.__con = 0
+        self.__int = 0
+        self.__wis = 0
+        self.__cha = 0
+        self.__pl_race = race_roll()
+        self.__pl_subrace = 0
+        self.__pl_class = class_roll()
+        self.__level = 1
+        self.__experience = 0
+        self.__proficiency_score = 2
+        self.__racial_abilities = []
+
+    def set_str(self, strength):
+        self.__str = strength
+
+    def set_dex(self, dex):
+        self.__dex = dex
+
+    def set_con(self, con):
+        self.__con = con
+
+    def set_int(self, intelligence):
+        self.__int = intelligence
+
+    def set_wis(self, wis):
+        self.__wis = wis
+
+    def set_cha(self, cha):
+        self.__cha = cha
+
+    def get_str(self):
+        return self.__str
+
+    def get_dex(self):
+        return self.__dex
+
+    def get_con(self):
+        return self.__con
+
+    def get_int(self):
+        return self.__int
+
+    def get_wis(self):
+        return self.__wis
+
+    def get_cha(self):
+        return self.__cha
+
+    def get_pl_race(self):
+        return self.__pl_race
+
+    def get_pl_subrace(self):
+        return self.__pl_subrace
+
+    def set_pl_subrace(self, pl_subrace):
+        self.__pl_subrace = pl_subrace
+
+    def get_pl_class(self):
+        return self.__pl_class
+
+    def get_level(self):
+        return self.__level
+
+    def get_experience(self):
+        return self.__experience
+
+    def get_proficiency_score(self):
+        return self.__proficiency_score
+
+    def get_racial_abilities(self):
+        return self.__racial_abilities
+
+    def get_racial_ability(self, a):
+        return self.__racial_abilities[a]
+
+    def set_racial_ability(self, racial_ability, a):
+        self.__racial_abilities[a] = racial_ability
+
+    def level_up(self):
+        self.__level += 1
+        if self.__experience >= 1000:
+            self.__experience -= 1000
+        if (self.__level - 1) % 4 == 0:
+            self.__proficiency_score += 1
+
+    def gain_experience(self, amount):
+        self.__experience += amount
+        if self.__experience >= 1000:
+            self.level_up()
+
+
+George = Character()
+
+stat_array = [stat_roll(), stat_roll(), stat_roll(), stat_roll(), stat_roll(), stat_roll()]
+stat_array.sort()
+while stat_array[5] < 14:
+    stat_array = [stat_roll(), stat_roll(), stat_roll(), stat_roll(), stat_roll(), stat_roll()]
+    stat_array.sort()
+
+
+classes = {
+        "Barbarian": "Barbarian",
+        "Bard": "Bard",
+        "Cleric": "Cleric",
+        "Druid": "Druid",
+        "Fighter": "Fighter",
+        "Monk": "Monk",
+        "Paladin": "Paladin",
+        "Ranger": "Ranger",
+        "Rogue": "Rogue",
+        "Sorcerer": "Sorcerer",
+        "Warlock": "Warlock",
+        "Wizard": "Wizard",
+    }
+
+if George.get_pl_class() == "Barbarian":
+
+    George.set_str(stat_assignment(5, 5))  # str
+
+    George.set_dex(stat_assignment(1, 3))  # dex
+
+    George.set_con(stat_assignment(4, 4))  # con
+
+    George.set_int(stat_assignment(0, 2))  # int
+
+    George.set_wis(stat_assignment(0, 2))  # wis
+
+    George.set_cha(stat_assignment(0, 3))  # cha
+
+if George.get_pl_class() == "Bard":
+
+    George.set_str(stat_assignment(0, 2))  # str
+
+    George.set_dex(stat_assignment(3, 4))  # dex
+
+    George.set_con(stat_assignment(0, 3))  # con
+
+    George.set_int(stat_assignment(0, 4))  # int
+
+    George.set_wis(stat_assignment(0, 4))  # wis
+
+    George.set_cha(stat_assignment(5, 5))  # cha
+
+if George.get_pl_class() == "Cleric":
+
+    George.set_str(stat_assignment(2, 4))  # str
+
+    George.set_dex(stat_assignment(0, 3))  # dex
+
+    George.set_con(stat_assignment(2, 4))  # con
+
+    George.set_int(stat_assignment(0, 3))  # int
+
+    George.set_wis(stat_assignment(5, 5))  # wis
+
+    George.set_cha(stat_assignment(0, 4))  # cha
+
+if George.get_pl_class() == "Druid":
+
+    George.set_str(stat_assignment(0, 2))  # str
+
+    George.set_dex(stat_assignment(3, 4))  # dex
+
+    George.set_con(stat_assignment(2, 4))  # con
+
+    George.set_int(stat_assignment(0, 3))  # int
+
+    George.set_wis(stat_assignment(5, 5))  # wis
+
+    George.set_cha(stat_assignment(0, 4))  # cha
+
+if George.get_pl_class() == "Fighter":
+
+    George.set_str(stat_assignment(5, 5))  # str
+
+    George.set_dex(stat_assignment(1, 3))  # dex
+
+    George.set_con(stat_assignment(4, 4))  # con
+
+    George.set_int(stat_assignment(0, 3))  # int
+
+    George.set_wis(stat_assignment(0, 3))  # wis
+
+    George.set_cha(stat_assignment(0, 3))  # cha
+
+if George.get_pl_class() == "Monk":
+
+    George.set_str(stat_assignment(0, 2))  # str
+
+    George.set_dex(stat_assignment(5, 5))  # dex
+
+    George.set_con(stat_assignment(2, 3))  # con
+
+    George.set_int(stat_assignment(0, 3))  # int
+
+    George.set_cha(stat_assignment(0, 3))  # cha
+
+    George.set_wis(stat_assignment(3, 4))  # wis
+
+if George.get_pl_class() == "Paladin":
+
+    George.set_str(stat_assignment(4, 5))  # str
+
+    George.set_dex(stat_assignment(0, 1))  # dex
+
+    George.set_con(stat_assignment(2, 3))  # con
+
+    George.set_int(stat_assignment(0, 1))  # int
+
+    George.set_wis(stat_assignment(2, 3))  # wis
+
+    George.set_cha(stat_assignment(4, 5))  # cha
+
+if George.get_pl_class() == "Ranger":
+
+    George.set_str(stat_assignment(2, 3))  # str
+
+    George.set_dex(stat_assignment(4, 5))  # dex
+
+    George.set_int(stat_assignment(0, 2))  # int
+
+    George.set_cha(stat_assignment(0, 2))  # cha
+
+    George.set_wis(stat_assignment(4, 5))  # wis
+
+    George.set_con(stat_assignment(0, 3))  # con
+
+if George.get_pl_class() == "Rogue":
+
+    George.set_str(stat_assignment(0, 3))  # str
+
+    George.set_dex(stat_assignment(5, 5))  # dex
+
+    George.set_con(stat_assignment(0, 4))  # con
+
+    George.set_int(stat_assignment(0, 4))  # int
+
+    George.set_wis(stat_assignment(0, 4))  # wis
+
+    George.set_cha(stat_assignment(0, 4))  # cha
+
+if George.get_pl_class() == "Sorcerer":
+
+    George.set_str(stat_assignment(0, 2))  # str
+
+    George.set_int(stat_assignment(0, 3))  # int
+
+    George.set_wis(stat_assignment(0, 3))  # wis
+
+    George.set_con(stat_assignment(0, 4))  # con
+
+    George.set_dex(stat_assignment(0, 4))  # dex
+
+    George.set_cha(stat_assignment(5, 5))  # cha
+
+if George.get_pl_class() == "Warlock":
+
+    George.set_str(stat_assignment(0, 2))  # str
+
+    George.set_con(stat_assignment(0, 3))  # con
+
+    George.set_dex(stat_assignment(0, 4))  # dex
+
+    George.set_int(stat_assignment(0, 4))  # int
+
+    George.set_wis(stat_assignment(0, 4))  # wis
+
+    George.set_cha(stat_assignment(5, 5))  # cha
+
+if George.get_pl_class() == "Wizard":
+
+    George.set_str(stat_assignment(0, 2))  # str
+
+    George.set_dex(stat_assignment(0, 4))  # dex
+
+    George.set_int(stat_assignment(5, 5))  # int
+
+    George.set_con(stat_assignment(0, 2))  # con
+
+    George.set_cha(stat_assignment(0, 3))  # cha
+
+    George.set_wis(stat_assignment(0, 4))  # wis
+
+if George.get_pl_race() == "Human":
+    George.set_pl_subrace("")
+    George.set_str(George.get_str() + 1)
+    George.set_dex(George.get_dex() + 1)
+    George.set_con(George.get_con() + 1)
+    George.set_int(George.get_int() + 1)
+    George.set_wis(George.get_wis() + 1)
+    George.set_cha(George.get_cha() + 1)
+
+if George.get_pl_race() == "Elf":  # ELF
+    for n in range(len(George.get_racial_abilities()), len(George.get_racial_abilities()) + 1):
+        George.get_racial_abilities().append(0)
+    George.set_racial_ability("Darkvision", len(George.get_racial_abilities()) - 1)
+    for n in range(len(George.get_racial_abilities()), len(George.get_racial_abilities()) + 1):
+        George.get_racial_abilities().append(0)
+    George.set_racial_ability("Keen Senses", len(George.get_racial_abilities()) - 1)
+    for n in range(len(George.get_racial_abilities()), len(George.get_racial_abilities()) + 1):
+        George.get_racial_abilities().append(0)
+    George.set_racial_ability("Trance", len(George.get_racial_abilities()) - 1)
+    if random.randint(0, 1):
+        George.set_pl_subrace("High")
+        George.set_int(George.get_int() + 1)
+        for n in range(len(George.get_racial_abilities()), len(George.get_racial_abilities()) + 1):
+            George.get_racial_abilities().append(0)
+        George.set_racial_ability("Elf Weapon Training", len(George.get_racial_abilities()) - 1)
+        for n in range(len(George.get_racial_abilities()), len(George.get_racial_abilities()) + 1):
+            George.get_racial_abilities().append(0)
+        George.set_racial_ability("Cantrip", len(George.get_racial_abilities()) - 1)
+    else:
+        George.set_pl_subrace("Wood")
+        George.set_wis(George.get_wis() + 1)
+        for n in range(len(George.get_racial_abilities()), len(George.get_racial_abilities()) + 1):
+            George.get_racial_abilities().append(0)
+        George.set_racial_ability("Elf Weapon Training", len(George.get_racial_abilities()) - 1)
+        for n in range(len(George.get_racial_abilities()), len(George.get_racial_abilities()) + 1):
+            George.get_racial_abilities().append(0)
+        George.set_racial_ability("Fleet of Foot", len(George.get_racial_abilities()) - 1)
+        for n in range(len(George.get_racial_abilities()), len(George.get_racial_abilities()) + 1):
+            George.get_racial_abilities().append(0)
+        George.set_racial_ability("Mask of the Wild", len(George.get_racial_abilities()) - 1)
+    George.set_dex(George.get_dex() + 2)
+
+if George.get_pl_race() == "Dwarf":  # DWARF
+    for n in range(len(George.get_racial_abilities()), len(George.get_racial_abilities()) + 1):
+        George.get_racial_abilities().append(0)
+    George.set_racial_ability("Darkvision", len(George.get_racial_abilities()) - 1)
+    for n in range(len(George.get_racial_abilities()), len(George.get_racial_abilities()) + 1):
+        George.get_racial_abilities().append(0)
+    George.set_racial_ability("Dwarven Resilience", len(George.get_racial_abilities()) - 1)
+    for n in range(len(George.get_racial_abilities()), len(George.get_racial_abilities()) + 1):
+        George.get_racial_abilities().append(0)
+    George.set_racial_ability("Dwarven Combat Training", len(George.get_racial_abilities()) - 1)
+    for n in range(len(George.get_racial_abilities()), len(George.get_racial_abilities()) + 1):
+        George.get_racial_abilities().append(0)
+    George.set_racial_ability("Stonecunning", len(George.get_racial_abilities()) - 1)
+    if random.randint(0, 1):
+        George.set_pl_subrace("Mountain")
+        George.set_str(George.get_str() + 2)
+        for n in range(len(George.get_racial_abilities()), len(George.get_racial_abilities()) + 1):
+            George.get_racial_abilities().append(0)
+        George.set_racial_ability("Dwarven Armor Training", len(George.get_racial_abilities()) - 1)
+    else:
+        George.set_pl_subrace("Hill")
+        George.set_wis(George.get_wis() + 1)
+        for n in range(len(George.get_racial_abilities()), len(George.get_racial_abilities()) + 1):
+            George.get_racial_abilities().append(0)
+        George.set_racial_ability("Dwarven Toughness", 4)
+    George.set_con(George.get_con() + 2)
+
+if George.get_pl_race() == "Halfling":   # HALFLING
+    for n in range(len(George.get_racial_abilities()), len(George.get_racial_abilities()) + 1):
+        George.get_racial_abilities().append(0)
+    George.set_racial_ability("Lucky", len(George.get_racial_abilities()) - 1)
+    for n in range(len(George.get_racial_abilities()), len(George.get_racial_abilities()) + 1):
+        George.get_racial_abilities().append(0)
+    George.set_racial_ability("Brave", len(George.get_racial_abilities()) - 1)
+    for n in range(len(George.get_racial_abilities()), len(George.get_racial_abilities()) + 1):
+        George.get_racial_abilities().append(0)
+    George.set_racial_ability("Halfling Nimbleness", len(George.get_racial_abilities()) - 1)
+    if random.randint(0, 1):
+        George.set_pl_subrace("Lightfoot")
+        George.set_cha(George.get_cha() + 1)
+        for n in range(len(George.get_racial_abilities()), len(George.get_racial_abilities()) + 1):
+            George.get_racial_abilities().append(0)
+        George.set_racial_ability("Naturally Stealthy", len(George.get_racial_abilities()) - 1)
+    else:
+        George.set_pl_subrace("Stout")
+        George.set_con(George.get_con() + 1)
+        for n in range(len(George.get_racial_abilities()), len(George.get_racial_abilities()) + 1):
+            George.get_racial_abilities().append(0)
+        George.set_racial_ability("Stout Resilience", len(George.get_racial_abilities()) - 1)
+    George.set_dex(George.get_dex() + 2)
+
+if George.get_pl_race() == "Gnome":  # GNOME
+    for n in range(len(George.get_racial_abilities()), len(George.get_racial_abilities()) + 1):
+        George.get_racial_abilities().append(0)
+    George.set_racial_ability("Darkvision", len(George.get_racial_abilities()) - 1)
+    for n in range(len(George.get_racial_abilities()), len(George.get_racial_abilities()) + 1):
+        George.get_racial_abilities().append(0)
+    George.set_racial_ability("Gnome Cunning", len(George.get_racial_abilities()) - 1)
+    if random.randint(0, 1):
+        George.set_pl_subrace("Forest")
+        George.set_dex(George.get_dex() + 1)
+        for n in range(len(George.get_racial_abilities()), len(George.get_racial_abilities()) + 1):
+            George.get_racial_abilities().append(0)
+        George.set_racial_ability("Natural Illusionist", len(George.get_racial_abilities()) - 1)
+        for n in range(len(George.get_racial_abilities()), len(George.get_racial_abilities()) + 1):
+            George.get_racial_abilities().append(0)
+        George.set_racial_ability("Speak with Small Beasts", len(George.get_racial_abilities()) - 1)
+    else:
+        George.set_pl_subrace("Rock")
+        George.set_con(George.get_con() + 1)
+        for n in range(len(George.get_racial_abilities()), len(George.get_racial_abilities()) + 1):
+            George.get_racial_abilities().append(0)
+        George.set_racial_ability("Artificer's Lore", len(George.get_racial_abilities()) - 1)
+        for n in range(len(George.get_racial_abilities()), len(George.get_racial_abilities()) + 1):
+            George.get_racial_abilities().append(0)
+        George.set_racial_ability("Tinker", len(George.get_racial_abilities()) - 1)
+    George.set_int(George.get_int() + 2)
+
+if George.get_pl_race() == "Tiefling":  # TIEFLING
+    for n in range(len(George.get_racial_abilities()), len(George.get_racial_abilities()) + 1):
+        George.get_racial_abilities().append(0)
+    George.set_racial_ability("Darkvision", len(George.get_racial_abilities()) - 1)
+    for n in range(len(George.get_racial_abilities()), len(George.get_racial_abilities()) + 1):
+        George.get_racial_abilities().append(0)
+    George.set_racial_ability("Hellish Resistance", len(George.get_racial_abilities()) - 1)
+    for n in range(len(George.get_racial_abilities()), len(George.get_racial_abilities()) + 1):
+        George.get_racial_abilities().append(0)
+    George.set_racial_ability("Infernal Legacy", len(George.get_racial_abilities()) - 1)
+    George.set_pl_subrace("")
+    George.set_cha(George.get_cha() + 2)
+    George.set_int(George.get_int() + 1)
+
+if George.get_pl_race() == "Half-Orc":  # HALF-ORC
+    for n in range(len(George.get_racial_abilities()), len(George.get_racial_abilities()) + 1):
+        George.get_racial_abilities().append(0)
+    George.set_racial_ability("Darkvision", len(George.get_racial_abilities()) - 1)
+    for n in range(len(George.get_racial_abilities()), len(George.get_racial_abilities()) + 1):
+        George.get_racial_abilities().append(0)
+    George.set_racial_ability("Menacing", len(George.get_racial_abilities()) - 1)
+    for n in range(len(George.get_racial_abilities()), len(George.get_racial_abilities()) + 1):
+        George.get_racial_abilities().append(0)
+    George.set_racial_ability("Relentless Endurance", len(George.get_racial_abilities()) - 1)
+    for n in range(len(George.get_racial_abilities()), len(George.get_racial_abilities()) + 1):
+        George.get_racial_abilities().append(0)
+    George.set_racial_ability("Savage Attacks", len(George.get_racial_abilities()) - 1)
+    George.set_pl_subrace("")
+    George.set_str(George.get_str() + 2)
+    George.set_con(George.get_con() + 1)
+
+if George.get_pl_race() == "Dragonborn":  # DRAGONBORN
+    ancestry_number = random.randint(1, 10)
+    ancestry_list = {
+        1: "Black",
+        2: "Blue",
+        3: "Brass",
+        4: "Bronze",
+        5: "Copper",
+        6: "Gold",
+        7: "Green",
+        8: "Red",
+        9: "Silver",
+        10: "White",
+    }
+    breath_list = {
+        "Black": "Acid Breath",
+        "Blue": "Lightning Breath",
+        "Brass": "Fire Breath",
+        "Bronze": "Lightning Breath",
+        "Copper": "Acid Breath",
+        "Gold": "Fire Breath",
+        "Green": "Poison Breath",
+        "Red": "Fire Breath",
+        "Silver": "Cold Breath",
+        "White": "Cold Breath",
+    }
+    resistance_list = {
+        "Black": "Acid Resistance",
+        "Blue": "Lightning Resistance",
+        "Brass": "Fire Resistance",
+        "Bronze": "Lightning Resistance",
+        "Copper": "Acid Resistance",
+        "Gold": "Fire Resistance",
+        "Green": "Poison Resistance",
+        "Red": "Fire Resistance",
+        "Silver": "Cold Resistance",
+        "White": "Cold Resistance",
+    }
+    George.set_pl_subrace(ancestry_list.get(ancestry_number))
+    for n in range(len(George.get_racial_abilities()), len(George.get_racial_abilities()) + 1):
+        George.get_racial_abilities().append(0)
+    George.set_racial_ability(breath_list.get(ancestry_list.get(ancestry_number)), len(George.get_racial_abilities()) - 1)
+    for n in range(len(George.get_racial_abilities()), len(George.get_racial_abilities()) + 1):
+        George.get_racial_abilities().append(0)
+    George.set_racial_ability(resistance_list.get(ancestry_list.get(ancestry_number)), len(George.get_racial_abilities()) - 1)
+    George.set_str(George.get_str() + 2)
+    George.set_cha(George.get_cha() + 1)
+
+if George.get_pl_race() == "Half-Elf":  # HALF-ELF
+    for n in range(len(George.get_racial_abilities()), len(George.get_racial_abilities()) + 1):
+        George.get_racial_abilities().append(0)
+    George.set_racial_ability("Darkvision", len(George.get_racial_abilities()) - 1)
+    for n in range(len(George.get_racial_abilities()), len(George.get_racial_abilities()) + 1):
+        George.get_racial_abilities().append(0)
+    George.set_racial_ability("Fey Ancestry", len(George.get_racial_abilities()) - 1)
+    George.set_pl_subrace("")
+    George.set_cha(George.get_cha() + 2)
+    he = random.randint(1, 5)
+    if he == 1:
+        George.set_str(George.get_str() + 1)
+    if he == 2:
+        George.set_dex(George.get_dex() + 1)
+    if he == 3:
+        George.set_con(George.get_con() + 1)
+    if he == 4:
+        George.set_int(George.get_int() + 1)
+    if he == 5:
+        George.set_wis(George.get_wis() + 1)
+
+if George.get_pl_race() == "Genasi":  # GENASI
+    if random.randint(0, 1):
+        if random.randint(0, 1):
+            George.set_pl_subrace("Water")
+            George.set_wis(George.get_wis() + 1)
+            for n in range(len(George.get_racial_abilities()), len(George.get_racial_abilities()) + 1):
+                George.get_racial_abilities().append(0)
+            George.set_racial_ability("Acid Resistance", len(George.get_racial_abilities()) - 1)
+            for n in range(len(George.get_racial_abilities()), len(George.get_racial_abilities()) + 1):
+                George.get_racial_abilities().append(0)
+            George.set_racial_ability("Amphibious", len(George.get_racial_abilities()) - 1)
+            for n in range(len(George.get_racial_abilities()), len(George.get_racial_abilities()) + 1):
+                George.get_racial_abilities().append(0)
+            George.set_racial_ability("Call to the Wave", len(George.get_racial_abilities()) - 1)
+        else:
+            George.set_pl_subrace("Earth")
+            George.set_str(George.get_str() + 1)
+            for n in range(len(George.get_racial_abilities()), len(George.get_racial_abilities()) + 1):
+                George.get_racial_abilities().append(0)
+            George.set_racial_ability("Earth Walk", len(George.get_racial_abilities()) - 1)
+            for n in range(len(George.get_racial_abilities()), len(George.get_racial_abilities()) + 1):
+                George.get_racial_abilities().append(0)
+            George.set_racial_ability("Merge with Stone", len(George.get_racial_abilities()) - 1)
+    else:
+        if random.randint(0, 1):
+            George.set_pl_subrace("Fire")
+            George.set_int(George.get_int() + 1)
+            for n in range(len(George.get_racial_abilities()), len(George.get_racial_abilities()) + 1):
+                George.get_racial_abilities().append(0)
+            George.set_racial_ability("Darkvision", len(George.get_racial_abilities()) - 1)
+            for n in range(len(George.get_racial_abilities()), len(George.get_racial_abilities()) + 1):
+                George.get_racial_abilities().append(0)
+            George.set_racial_ability("Fire Resistance", len(George.get_racial_abilities()) - 1)
+            for n in range(len(George.get_racial_abilities()), len(George.get_racial_abilities()) + 1):
+                George.get_racial_abilities().append(0)
+            George.set_racial_ability("Reach to the Blaze", len(George.get_racial_abilities()) - 1)
+        else:
+            George.set_pl_subrace("Air")
+            George.set_dex(George.get_dex() + 1)
+            for n in range(len(George.get_racial_abilities()), len(George.get_racial_abilities()) + 1):
+                George.get_racial_abilities().append(0)
+            George.set_racial_ability("Unending Breath", len(George.get_racial_abilities()) - 1)
+            for n in range(len(George.get_racial_abilities()), len(George.get_racial_abilities()) + 1):
+                George.get_racial_abilities().append(0)
+            George.set_racial_ability("Mingle with the Wind", len(George.get_racial_abilities()) - 1)
+    George.set_con(George.get_con() + 2)
+
+if George.get_pl_race() == "Goblin":  # GOBLIN
+    for n in range(len(George.get_racial_abilities()), len(George.get_racial_abilities()) + 1):
+        George.get_racial_abilities().append(0)
+    George.set_racial_ability("Darkvision", len(George.get_racial_abilities()) - 1)
+    for n in range(len(George.get_racial_abilities()), len(George.get_racial_abilities()) + 1):
+        George.get_racial_abilities().append(0)
+    George.set_racial_ability("Fury of the Small", len(George.get_racial_abilities()) - 1)
+    for n in range(len(George.get_racial_abilities()), len(George.get_racial_abilities()) + 1):
+        George.get_racial_abilities().append(0)
+    George.set_racial_ability("Nimble Escape", len(George.get_racial_abilities()) - 1)
+    George.set_pl_subrace("")
+    George.set_dex(George.get_dex() + 2)
+    George.set_con(George.get_con() + 1)
+
+if George.get_pl_race() == "Kobold":  # KOBOLD
+    for n in range(len(George.get_racial_abilities()), len(George.get_racial_abilities()) + 1):
+        George.get_racial_abilities().append(0)
+    George.set_racial_ability("Darkvision", len(George.get_racial_abilities()) - 1)
+    for n in range(len(George.get_racial_abilities()), len(George.get_racial_abilities()) + 1):
+        George.get_racial_abilities().append(0)
+    George.set_racial_ability("Grovel, Cower, and Beg", len(George.get_racial_abilities()) - 1)
+    for n in range(len(George.get_racial_abilities()), len(George.get_racial_abilities()) + 1):
+        George.get_racial_abilities().append(0)
+    George.set_racial_ability("Pack Tactics", len(George.get_racial_abilities()) - 1)
+    for n in range(len(George.get_racial_abilities()), len(George.get_racial_abilities()) + 1):
+        George.get_racial_abilities().append(0)
+    George.set_racial_ability("Sunlight Sensitivity", len(George.get_racial_abilities()) - 1)
+    George.set_pl_subrace("")
+    George.set_dex(George.get_dex() + 2)
+
+print(George.get_pl_class())
+if George.get_pl_subrace() == "":
+    print(George.get_pl_race())
+else:
+    print(George.get_pl_subrace(), George.get_pl_race())
+print("Str: ", George.get_str())
+print("Dex: ", George.get_dex())
+print("Con: ", George.get_con())
+print("Int: ", George.get_int())
+print("Wis: ", George.get_wis())
+print("Cha: ", George.get_cha())
+for i in range(0, len(George.get_racial_abilities())):
+    print(George.get_racial_ability(i))
